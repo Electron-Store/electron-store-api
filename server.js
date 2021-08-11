@@ -22,13 +22,13 @@ app.get("/refresh-db", (req, res) => {
 });
 
 app.get("/get-app", async (req, res) => {
-	const appID = req.params.appID;
+	const appID = req.query.appID;
 	const appinfo = await appParser.getAppInfo(appID);
 	res.send(appinfo);
 });
 
 app.get("/get-category", async (req, res) => {
-	const name = req.params.category;
+	const name = req.query.category;
 	const category = await services.getCategoryFromDB(name);
 	res.send(category);
 });
@@ -39,7 +39,7 @@ app.get("/get-category-list", async (req, res) => {
 });
 
 app.get("/search-app", async (req, res) => {
-	const query = req.params.query;
+	const query = req.query.query;
 	const results = await services.searchApp(query);
 	res.send(results);
 });
