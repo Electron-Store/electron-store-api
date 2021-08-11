@@ -36,7 +36,7 @@ async function getCategoryApps(category) {
 	const listedApps = root.querySelectorAll(".listed-app");
 	listedApps.forEach((app) => {
 		const name = app.querySelector(".listed-app-name").textContent;
-		const id = app.querySelector("a").href.replace("/app/", "");
+		const id = app.querySelector("a").getAttribute("href").replace("/app/", "");
 		const description = app.querySelector(
 			".listed-app-description"
 		).textContent;
