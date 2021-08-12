@@ -43,3 +43,8 @@ app.get("/search-app", async (req, res) => {
 	const results = await services.searchApp(query);
 	res.send(results);
 });
+
+app.get("/explore-feed", async (req, res) => {
+	const feed = await services.getExploreFeed();
+	res.send(feed);
+});

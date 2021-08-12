@@ -77,10 +77,16 @@ async function searchApp(query) {
 	return results;
 }
 
+async function getExploreFeed() {
+	let { data: feed, error } = await supabase.from("Explore").select("*");
+	return feed;
+}
+
 module.exports = {
 	createRequest,
 	pushCategoryToDB,
 	getCategoryFromDB,
 	getCategoryListFromDB,
 	searchApp,
+	getExploreFeed,
 };
