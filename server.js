@@ -41,5 +41,5 @@ app.get("/get-category-list", async (req, res) => {
 app.get("/search-app", async (req, res) => {
 	const query = req.query.query;
 	const results = await services.searchApp(query);
-	res.send(results);
+	res.send(results[0]);
 });
