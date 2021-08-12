@@ -5,7 +5,7 @@ async function getAppInfo(id) {
 	const html = await createRequest(`/${id}`);
 	const root = parser.parse(html);
 	const latestReleaseMeta = root.querySelector(".app-meta-entry-downloads");
-	const latestRelease = null;
+	let latestRelease = null;
 
 	if (latestReleaseMeta) {
 		latestRelease = {
