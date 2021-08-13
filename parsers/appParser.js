@@ -1,5 +1,5 @@
 const parser = require("node-html-parser");
-const { createRequest } = require("./services");
+const { createRequest } = require("../utils");
 
 async function getAppInfo(id) {
 	const html = await createRequest(`/${id}`);
@@ -26,9 +26,10 @@ async function getAppInfo(id) {
 		return meta;
 	});
 	const appInfo = {
+		id,
 		name: root.querySelector("h1").textContent.trim(),
 		description: root.querySelector("h3").textContent,
-		icon:
+		logo:
 			"https://www.electronjs.org" +
 			root.querySelector(".CircleBadge-icon").getAttribute("src"),
 		meta: metaInfo,

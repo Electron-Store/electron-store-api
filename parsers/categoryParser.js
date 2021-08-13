@@ -1,11 +1,12 @@
 const parser = require("node-html-parser");
-const services = require("./services.js");
+const { createRequest, pushCategoryToDB } = require("../utils");
+
 const BASE_IMAGE_URL =
 	"https://pxfnmafyqvdhzxosxcqw.supabase.in/storage/v1/object/public/images/icons/";
 
 async function getCategories() {
 	console.clear();
-	const html = await services.createRequest();
+	const html = await createRequest();
 	if (html) {
 		const root = parser.parse(html);
 		const categoryList = root.querySelector("ul");
@@ -28,7 +29,7 @@ async function getApps() {
 }
 
 async function getCategoryApps(category) {
-	const html = await services.createRequest(
+	const html = await createRequest(
 		`?category=${category.toLowerCase().replace(/\s/, "-")}`
 	);
 	const root = parser.parse(html);
@@ -68,7 +69,7 @@ async function getCategoryApps(category) {
 			BASE_IMAGE_URL + category.toLowerCase().replace(/\s/g, "-") + "-icon.svg",
 		apps,
 	};
-	await services.pushCategoryToDB(categoryInfo);
+	await pushCategoryToDB(categoryInfo);
 }
 
 module.exports = {
