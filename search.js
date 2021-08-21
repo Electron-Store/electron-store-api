@@ -1,3 +1,5 @@
+const { supabase } = require("./constants");
+
 async function searchApp(query) {
 	query = query.toLowerCase();
 	let { data: categories, error } = await supabase

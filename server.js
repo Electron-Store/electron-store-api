@@ -41,6 +41,7 @@ app.get("/get-category-list", async (req, res) => {
 app.get("/search-app", async (req, res) => {
 	const query = req.query.query;
 	const results = await searchApp(query);
+	res.header({ "Access-Control-Allow-Origin": "*" });
 	res.send(results);
 });
 
@@ -54,7 +55,6 @@ app.post("/add-explore-category", async (req, res) => {
 	console.log(newCategoryname);
 	const response = await exploreFeed.addExploreFeedCategory(newCategoryname);
 	res.send(response);
-	// res.send("response");
 });
 
 app.post("/add-app-to-explore", async (req, res) => {
