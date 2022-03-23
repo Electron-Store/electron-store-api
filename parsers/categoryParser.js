@@ -31,7 +31,7 @@ async function getApps() {
 
 async function getCategoryApps(category) {
 	const html = await createRequest(
-		`?category=${category.toLowerCase().replace(/\s/, "-")}`
+		`?category=${category.toLowerCase().replace(/\s&\s/, "-").replace(/\s/, "-")}`
 	);
 	const root = parser.parse(html);
 	const apps = [];
