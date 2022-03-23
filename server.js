@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const appParser = require("./parsers/appParser");
+const cParser = require("./parsers/categoryParser");
 const categoryFeed = require("./feeds/categoryFeed");
 const exploreFeed = require("./feeds/exploreFeed");
 const { searchApp } = require("./search");

@@ -1,5 +1,6 @@
 const parser = require("node-html-parser");
-const { createRequest, pushCategoryToDB } = require("../utils");
+const { createRequest } = require("../utils");
+const { pushCategoryToDB } = require('../feeds/categoryFeed')
 
 const BASE_IMAGE_URL =
 	"https://pxfnmafyqvdhzxosxcqw.supabase.in/storage/v1/object/public/images/icons/";
