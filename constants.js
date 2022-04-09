@@ -1,9 +1,27 @@
-const supabaseSDK = require("@supabase/supabase-js");
-const supabaseUrl = "https://pxfnmafyqvdhzxosxcqw.supabase.co";
-const supabaseKey =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyODYxMDMzMCwiZXhwIjoxOTQ0MTg2MzMwfQ.Uxy2KiZ1meiAovuckfofcW8igoXcHcE9SETrRR6BUsY";
-const supabase = supabaseSDK.createClient(supabaseUrl, supabaseKey);
+// const supabaseSDK = require("@supabase/supabase-js");
+// const supabaseUrl = process.env.SUPABASE_URL;
+// const supabaseKey = process.env.SUPABASE_KEY;
+// const supabase = supabaseSDK.createClient(supabaseUrl, supabaseKey);
+
+const APPWRITE_KEY = process.env.APPWRITE_KEY;
+const PROJ_ID = "electron-store";
+const COLL_ID = "apps";
+
+// module.exports = {supabase};
+const sdk = require('node-appwrite');
+
+// Init SDK
+let client = new sdk.Client();
+
+let database = new sdk.Database(client);
+
+client
+    .setEndpoint('https://backend.electron-store.org/v1') // Your API Endpoint
+    .setProject(PROJ_ID) // Your project ID
+    .setKey(APPWRITE_KEY) // Your secret API key
+    ;
 
 module.exports = {
-	supabase,
-};
+    database,
+    COLL_ID
+}

@@ -1,42 +1,39 @@
 const parser = require("node-html-parser");
 const { createRequest } = require("../utils");
+const {database, Query, COLL_ID} = require('../constants');
+const axios = require('axios');
+
+// function toBase64(url,callback){
+// 	var request = require('request').defaults({ encoding: null });
+// 	if (url.startsWith("data:")) callback(url);
+// 	if (url.startsWith("file:")) callback(url);
+// 	request.get(url, function (error, response, body) {
+// 		if (!error && response.statusCode == 200) {
+// 			data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(body).toString('base64');
+// 			callback(data);
+// 		}
+// 	});
+// }
 
 async function getAppInfo(id) {
-	const html = await createRequest(`/${id}`);
-	const root = parser.parse(html);
-	const latestReleaseMeta = root.querySelector(".app-meta-entry-downloads");
-	let latestRelease = null;
-
-	if (latestReleaseMeta) {
-		latestRelease = {
-			version: latestReleaseMeta.querySelector("h5").textContent,
-			files: processFiles(latestReleaseMeta.querySelectorAll("a")),
-		};
+	try {
+		appInfo = await database.getDocument(COLL_ID, id);
+		delete appInfo['$id'];
+		delete appInfo['$internalId'];
+		delete appInfo['$collection'];
+		delete appInfo['$read'];
+		delete appInfo['$write'];
+		const appReadme = await axios({url: `https://api.electron-store.org/app-readme/${id}`, method: "GET"});
+		const appReleases = await axios({url: `https://api.electron-store.org/app-releases/${id}`, method: "GET"});
+		return {
+			...appInfo,
+			logo: `https://api.electron-store.org/app-img/${id}`,
+			readme: appReadme.data,
+			latestRelease: appReleases.data,
+		}
+	} catch (err) {
+		console.log(err)
 	}
-
-	const metaTrays = root.querySelectorAll(".app-meta-entry");
-	const metaInfo = Array.from(metaTrays).map((tray) => {
-		const meta = {
-			title: tray.querySelector("h5")?.textContent.trim() || "",
-			data:
-				tray.querySelector("a")?.textContent.trim() ||
-				tray.querySelector("span")?.textContent.trim() ||
-				"",
-		};
-		return meta;
-	});
-	const appInfo = {
-		id,
-		name: root.querySelector("h1").textContent.trim(),
-		description: root.querySelector("h3").textContent,
-		logo:
-			"https://www.electronjs.org" +
-			root.querySelector(".CircleBadge-icon").getAttribute("src"),
-		meta: metaInfo,
-		readme: root.querySelector("#readme")?.innerHTML || "",
-		latestRelease,
-	};
-	return appInfo;
 }
 
 function processFiles(aTags) {

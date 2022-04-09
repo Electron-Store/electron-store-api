@@ -1,9 +1,19 @@
-const { supabase } = require("../constants");
+const { database, COLL_ID } = require("../constants");
 const { getAppInfo } = require("../parsers/appParser");
 
 async function getExploreFeed() {
-	let { data: feed, error } = await supabase.from("Explore").select("*");
-	return feed;
+	let latestApps = [];
+	let data = await database.listDocuments(COLL_ID, [], 51, 0, undefined, undefined, ["uploadDate"], ["DESC"]);
+	for (app in data.documents) {
+		let appData = data.documents[app];
+		delete appData['$id'];
+		delete appData['$read'];
+		delete appData['$write'];
+		delete appData['$internalId'];
+		delete appData['$collection'];
+		latestApps.push(appData);
+	}
+	return latestApps;
 }
 
 async function addExploreFeedCategory(category) {
@@ -19,7 +29,7 @@ async function addExploreFeedCategory(category) {
 }
 
 async function addAppToExploreFeed(categoryTitle, appLink) {
-	const appID = appLink.replace("https://www.electronjs.org/apps/", "");
+	const appID = appLink.replace("https://api.electron-store.org/apps/", "");
 	const appInfo = await getAppInfo(appID);
 
 	let { data, error } = await supabase
