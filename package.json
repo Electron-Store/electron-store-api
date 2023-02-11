@@ -19,7 +19,7 @@
     "devDependencies": {
         "@types/lunr": "^2.3.4",
         "@types/node": "^17.0.23",
-        "nodemon": "^2.0.15"
+        "nodemon": "^2.0.20"
     },
     "scripts": {
         "start": "nodemon server.js"
